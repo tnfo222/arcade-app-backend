@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const usersController = require('./controllers/users_controller')
 const cookieSession = require('cookie-session')
 const defineCurrentUser = require('./middleware/defineCurrentUser')
 
@@ -28,7 +29,7 @@ app.use(defineCurrentUser)
 // Controllers & Routes
 
 app.use(express.urlencoded({ extended: true }))
-app.use('/users', require('./controllers/users'))
+app.use('/users', usersController)
 app.use('/authentication', require('./controllers/authentication'))
 
 // Listen for Connections
