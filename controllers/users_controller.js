@@ -1,21 +1,28 @@
 const users = require('express').Router()
 const db = require("../models") 
-const user = require('../models/user')
+const bcrypt = require('bcrypt')
 
 const { User } = db
 
 //Create new User
 users.post('/', async (req, res) => {
-    try {
-        const newUser = await User.create(req.body)
-        res.status(200).json({
-            message: "Successfully created new user",
-            data: newUser
-        })
-    } catch (err) {
-        res.status(500).json(err)
-    }
+    let { password, ...rest } = req.body;
+    const user = await User.create({ 
+        ...rest, 
+        passwordDigest: await bcrypt.hash(password, 10)
+    })
+    res.json(user)
 })
+//    try {
+//        const newUser = await User.create(req.body)
+//        res.status(200).json({
+//            message: "Successfully created new user",
+//            data: newUser
+//        })
+//    } catch (err) {
+//        res.status(500).json(err)
+//    }
+//})
 
 //Update User
 users.put('/:id', async (req, res) => {
@@ -59,11 +66,11 @@ users.get('/', async (req, res) => {
     }
 })
 
-//Get single User
-users.get('/:id', async (req,res) => {
+//Get single User by username
+users.get('/:username', async (req,res) => {
     try {
         const foundUser = await User.findOne({
-            where: { user_id: req.params.id }
+            where: { username: req.params.id }
         })
         res.status(200).json(foundUser)
     } catch (error) {

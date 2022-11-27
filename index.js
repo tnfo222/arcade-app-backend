@@ -29,8 +29,7 @@ app.use(defineCurrentUser)
 // Controllers & Routes
 
 app.use(express.urlencoded({ extended: true }))
-app.use('/users', usersController)
-app.use('/authentication', require('./controllers/authentication'))
+app.use('/user', usersController)
 
 // Listen for Connections
 app.listen(process.env.PORT, () => {
