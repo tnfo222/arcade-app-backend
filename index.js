@@ -30,6 +30,7 @@ app.use(defineCurrentUser)
 
 app.use(express.urlencoded({ extended: true }))
 app.use('/user', usersController)
+app.use('/authentication', require('./controllers/authentication'))
 
 // Listen for Connections
 app.listen(process.env.PORT, () => {
